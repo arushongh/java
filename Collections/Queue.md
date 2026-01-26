@@ -141,7 +141,7 @@ System.out.println(maxHeap.peek()); // output : 10
 
 ---
 
-## 8. Deque Methods
+## Deque Methods
 
 ### Insertion:
 
@@ -166,7 +166,7 @@ System.out.println(maxHeap.peek()); // output : 10
 
 ---
 
-## 9. BlockingQueue
+## BlockingQueue
 
 A **thread-safe** queue used in **multithreading**.
 
@@ -186,7 +186,7 @@ A **thread-safe** queue used in **multithreading**.
 
 ---
 
-## 10. Producer–Consumer Example
+## Producer–Consumer Example
 
 ### Producer:
 
@@ -202,7 +202,7 @@ BlockingQueue handles synchronization automatically.
 
 ---
 
-## 11. LinkedBlockingQueue
+##  LinkedBlockingQueue
 
 ### Characteristics:
 
@@ -214,7 +214,7 @@ Best choice for **high producer-consumer throughput**.
 
 ---
 
-## 12. PriorityBlockingQueue
+## PriorityBlockingQueue
 
 * Thread-safe version of PriorityQueue
 * Unbounded
