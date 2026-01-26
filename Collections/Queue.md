@@ -2,7 +2,7 @@
 
 ---
 
-## 1. What is a Queue?
+## What is a Queue?
 
 A **Queue** is a linear data structure that follows the **FIFO (First In, First Out)** principle.
 
@@ -16,7 +16,7 @@ A **Queue** is a linear data structure that follows the **FIFO (First In, First 
 
 ---
 
-## 2. Queue Interface in Java
+## Queue Interface in Java
 
 Java provides `Queue` as an **interface** in `java.util` package.
 
@@ -34,20 +34,20 @@ Common implementations:
 
 ---
 
-## 3. Basic Queue Operations
+## Basic Queue Operations
 
 | Operation | Method      | Behavior if Queue is Empty / Full |
 | --------- | ----------- | --------------------------------- |
-| Insert    | `add()`     | Throws exception if fails         |
-| Insert    | `offer()`   | Returns false if fails            |
-| Remove    | `remove()`  | Throws exception if empty         |
-| Remove    | `poll()`    | Returns null if empty             |
+| Insert    | `add()`     | Returns true if element is added else Throws exception      |
+| Insert    | `offer()`   | Returns true if element is added else false            |
+| Remove    | `remove()`  | Return true if element is removed else Throws exception if empty         |
+| Remove    | `poll()`    | Returns true if element is removed else null if empty             |
 | Peek      | `element()` | Throws exception if empty         |
 | Peek      | `peek()`    | Returns null if empty             |
 
 ---
 
-## 4. Queue Using LinkedList
+## Queue Using LinkedList
 
 `LinkedList` implements the `Queue` interface.
 
@@ -71,27 +71,7 @@ queue.peek();   // returns 2
 
 ---
 
-## 5. ArrayBlockingQueue
-
-A **bounded**, **thread-safe** blocking queue backed by an array.
-
-### Characteristics:
-
-* Fixed size
-* Thread-safe
-* Uses single lock (lower concurrency)
-
-### Example:
-
-```java
-BlockingQueue<Integer> queue = new ArrayBlockingQueue<>(2);
-queue.add(1);
-queue.offer(2);
-```
-
----
-
-## 6. PriorityQueue
+## PriorityQueue
 
 A `PriorityQueue` does **NOT** follow FIFO.
 
@@ -99,15 +79,20 @@ A `PriorityQueue` does **NOT** follow FIFO.
 
 * Elements are ordered by **priority**
 * Implemented using **Heap (Min-Heap by default)**
+* Custom comparator can also be provided for custom odering
 * Null elements not allowed
 
 ### Example (Min Heap):
 
 ```java
+
 PriorityQueue<Integer> pq = new PriorityQueue<>();
 pq.add(5);
 pq.add(1);
 pq.add(3);
+
+System.out.println(pq.peek()); // output : 1
+
 ```
 
 Output priority:
@@ -119,7 +104,17 @@ Output priority:
 ### Max Heap using Comparator:
 
 ```java
+// PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Comparator.reverseOrder());// comparator for custom ordering
+
+//or
+
 PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a, b) -> b - a);
+
+maxHead.add(5);
+maxHeap.add(1);
+maxHeap.add(10);
+
+System.out.println(maxHeap.peek()); // output : 10
 ```
 
 ### Time Complexity:
@@ -129,7 +124,7 @@ PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a, b) -> b - a);
 
 ---
 
-## 7. Deque (Double Ended Queue)
+## Deque (Double Ended Queue)
 
 `Deque` allows insertion and removal from **both ends**.
 
@@ -150,29 +145,24 @@ PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a, b) -> b - a);
 
 ### Insertion:
 
-* `addFirst()`
-* `addLast()`
-* `offerFirst()`
-* `offerLast()`
+* `addFirst()` Throws Exception if fails
+* `addLast()` Throws Exception if fails
+* `offerFirst()` Returns false if fails
+* `offerLast()` Returns false if fails
 
 ### Deletion:
 
-* `removeFirst()`
-* `removeLast()`
-* `pollFirst()`
-* `pollLast()`
+* `removeFirst()` removes and returns the first element of this deque. throws exception if deque is empty
+* `removeLast()` throws exception if deque is empty
+* `pollFirst()` returns null if deque is empty
+* `pollLast()` returns null if deque is empty
 
 ### Peek:
 
-* `getFirst()`
-* `getLast()`
-* `peekFirst()`
-* `peekLast()`
-
-### Stack Operations:
-
-* `push()` → addFirst()
-* `pop()` → removeFirst()
+* `getFirst()` throws exception if deque is empty
+* `getLast()` throws exception if deque is empty
+* `peekFirst()` returns null if deque is empty
+* `peekLast()` returns null if deque is empty
 
 ---
 
