@@ -45,8 +45,8 @@ Common implementations:
 | --------- | ----------- | --------------------------------- |
 | Insert    | `add()`     | Returns true if element is added else Throws exception      |
 | Insert    | `offer()`   | Returns true if element is added else false            |
-| Remove    | `remove()`  | Return true if element is removed else Throws exception if empty         |
-| Remove    | `poll()`    | Returns true if element is removed else null if empty             |
+| Remove    | `remove()`  | Returns the removed element, throws exception if empty         |
+| Remove    | `poll()`    | Returns the removed element, or null if empty             |
 | Peek      | `element()` | Throws exception if empty         |
 | Peek      | `peek()`    | Returns null if empty             |
 
@@ -488,7 +488,6 @@ Thread-safe **double-ended** non-blocking queue.
 | LinkedList | ❌ No | ❌ No | ❌ No | FIFO | ✅ Yes | Basic single-thread queue |
 | PriorityQueue | ❌ No | ❌ No | ❌ No | Priority | ❌ No | Single-thread priority handling |
 | Deque (ArrayDeque) | ❌ No | ❌ No | ❌ No | FIFO / LIFO | ❌ No | Fast stack/queue (single-thread) |
-| Deque (LinkedListDeque) | ❌ No | ❌ No | ❌ No | FIFO / LIFO | ✅ Yes | Stack + Queue using LinkedList |
 | ArrayBlockingQueue | ✅ Yes | ✅ Yes | ✅ Yes | FIFO | ❌ No | Fixed-size producer-consumer |
 | LinkedBlockingQueue | ✅ Yes | ✅ Yes | ✅ / ❌ | FIFO | ❌ No | High-throughput producer-consumer |
 | PriorityBlockingQueue | ✅ Yes | ⚠️ Partial | ❌ No | Priority | ❌ No | Concurrent priority tasks |
