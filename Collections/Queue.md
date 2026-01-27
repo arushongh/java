@@ -481,17 +481,6 @@ Thread-safe **double-ended** non-blocking queue.
 
 ---
 
-## Queue vs BlockingQueue vs Deque
-
-| Feature      | Queue | BlockingQueue | Deque    |
-| ------------ | ----- | ------------- | -------- |
-| Thread-safe  | ❌     | ✅             | ❌ / ✅    |
-| Blocking     | ❌     | ✅             | ❌        |
-| FIFO         | ✅     | ✅             | Optional |
-| Double-ended | ❌     | ❌             | ✅        |
-
----
-
 ## Summary
 
 | Data Structure | Thread-Safe | Blocking | Bounded | Ordering | Null Allowed | Use Case |
@@ -508,5 +497,5 @@ Thread-safe **double-ended** non-blocking queue.
 | ConcurrentLinkedQueue | ✅ Yes | ❌ No | ❌ No | FIFO | ❌ No | Lock-free high-throughput queue |
 | ConcurrentLinkedDeque | ✅ Yes | ❌ No | ❌ No | FIFO / LIFO | ❌ No | Lock-free double-ended queue |
 
-
+---
 
