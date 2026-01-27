@@ -286,6 +286,8 @@ System.out.println(queue.peek());// output : 10
 
 ## SynchronousQueue
 
+A blocking queue in which each insert operation must wait for a corresponding remove operation by another thread, and vice versa
+
 ### Characteristics:
 
 * No internal storage
