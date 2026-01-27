@@ -164,7 +164,30 @@ System.out.println(maxHeap.peek()); // output : 10
 * `peekFirst()` returns null if deque is empty
 * `peekLast()` returns null if deque is empty
 
+```java
+//Deque<Integer> deque1 = new ArrayDeque<>();
+Deque<Integer> deque1 = new LinkedList<>();
+
+deque1.addFirst(1);
+deque1.addLast(2);
+deque1.offerFirst(0);
+deque1.offerLast(3);
+
+System.out.println(deque1); // [0, 1, 2, 3]
+
+deque1.removeFirst();// 0
+deque1.pollLast();// 3
+
+System.out.println(deque1); // [1, 2]
+
+for(int num:deque1){
+  System.out.println(num);
+}   
+
+```
+
 ---
+
 
 ## BlockingQueue
 
@@ -179,36 +202,48 @@ A **thread-safe** queue used in **multithreading**.
 
 | Method    | Behavior             |
 | --------- | -------------------- |
-| `put()`   | Waits if full        |
-| `take()`  | Waits if empty       |
-| `offer()` | Waits for given time |
-| `poll()`  | Waits for given time |
+| `put()`   | Waits if full - Blocks forever       |
+| `take()`  | Waits if empty - Blocks forever       |
+| `offer(E e, long time, TimeUnit unit)` | Waits for given time |
+| `poll(long time, TimeUnit unit)`  | Waits for given time |
+
 
 ---
+## ArrayBlockingQueue
 
-## Producer–Consumer Example
+### Characteristics:
 
-### Producer:
+* Bounded
+* Backed by Circular Array
+* Low memory overhead
+* Uses a single lock for both enqueue and dequeue operations
+* more threads -> problem
 
-* Produces data
-* Inserts into queue using `put()`
+```java
+BlockingQueue<Integer>queue = new ArrayBlockingQueue<>(5);
+queue.put(10);
+queue.put(11);
+queue.put(2);
+		
+queue.take();
+		
+System.out.println(queue.peek()); // output : 11
 
-### Consumer:
 
-* Consumes data
-* Removes using `take()`
-
-BlockingQueue handles synchronization automatically.
-
----
+```
 
 ##  LinkedBlockingQueue
 
 ### Characteristics:
 
-* Optionally bounded
+* Optionally bounded (if capacity is not provided it creates a capacity of Integer.MAX_VALUE)
 * Backed by LinkedList
-* Uses **two locks** (higher concurrency)
+* Uses **two locks** (higher concurrency) leads to less waiting time
+
+```java
+BlockingQueue<Integer>queue = new LinkedBlockingQueue<>(); // unbounded
+BlockingQueue<Integer>queue = new LinkedBlockingQueue<>(5); // bounded by size 5
+```
 
 Best choice for **high producer-consumer throughput**.
 
@@ -219,17 +254,32 @@ Best choice for **high producer-consumer throughput**.
 * Thread-safe version of PriorityQueue
 * Unbounded
 * Elements ordered by priority
-* `put()` does NOT block
+* Initial Capacity of 11
+* Binary Heap as array is used and can grow dynamically
+* `put()` does NOT block since unbounded
 
 ### Example:
-
 ```java
-BlockingQueue<String> pq = new PriorityBlockingQueue<>(11, Comparator.reverseOrder());
+BlockingQueue<Integer> queue = new PriorityBlockingQueue<>(); // uses natural odering 
+BlockingQueue<Integer> queue = new PriorityBlockingQueue<>(10); // with initial capacity although its not limited
+```
+```java
+BlockingQueue<Integer> queue = new PriorityBlockingQueue<>(5,Comparator.reverseOrder());//Ordering controlled by comparator
+
+queue.put(10);
+queue.put(11);
+queue.put(2);
+		
+System.out.println(queue.peek());// output : 11
+
+queue.take();
+		
+System.out.println(queue.peek());// output : 10
 ```
 
 ---
 
-## 13. SynchronousQueue
+## SynchronousQueue
 
 ### Characteristics:
 
@@ -237,9 +287,53 @@ BlockingQueue<String> pq = new PriorityBlockingQueue<>(11, Comparator.reverseOrd
 * Each `put()` waits for a `take()`
 * Used in handoff designs
 
+``java
+
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.SynchronousQueue;
+
+public class Main {
+    public static void main(String[] args) {
+
+        BlockingQueue<Integer> queue = new SynchronousQueue<>();
+
+        Thread producer = new Thread(() -> {
+            try {
+                System.out.println("Producer: Trying to put...");
+                queue.put(1); // BLOCKS here
+                System.out.println("Producer: Put completed");
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+
+        Thread consumer = new Thread(() -> {
+            try {
+                Thread.sleep(3000); // delay consumer
+                System.out.println("Consumer: Trying to take...");
+                int val = queue.take();
+                System.out.println("Consumer: Took " + val);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+
+        producer.start();
+        consumer.start();
+    }
+}
+/**
+Output: 
+Consumer: Trying to take...
+Producer: Put completed
+Consumer: Took 1
+*/
+
+```
+
 ---
 
-## 14. DelayQueue
+## DelayQueue
 
 A queue where elements become available **only after delay expires**.
 
