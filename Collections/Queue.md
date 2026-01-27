@@ -28,9 +28,14 @@ Common implementations:
 
 * `LinkedList`
 * `PriorityQueue`
-* `ArrayDeque`
+* `Deque`
 * `ArrayBlockingQueue`
 * `LinkedBlockingQueue`
+* `PriorityBlockingQueue`
+* `SynchronousQueue`
+* `DelayQueue`
+* `ConcurrentLinkedQueue`
+* `ConcurrentLinkedDeque`
 
 ---
 
@@ -287,7 +292,7 @@ System.out.println(queue.peek());// output : 10
 * Each `put()` waits for a `take()`
 * Used in handoff designs
 
-``java
+```java
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
@@ -324,6 +329,7 @@ public class Main {
 }
 /**
 Output: 
+Producer: Trying to put...
 Consumer: Trying to take...
 Producer: Put completed
 Consumer: Took 1
@@ -350,9 +356,65 @@ A queue where elements become available **only after delay expires**.
 
 Elements must implement `Delayed` interface.
 
+```java
+
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.DelayQueue;
+import java.util.concurrent.Delayed;
+import java.util.concurrent.TimeUnit;
+
+public class DelayQueueDemo {
+    public static void main(String[] args) throws InterruptedException {
+
+        BlockingQueue<DelayedTask> delayQueue = new DelayQueue<>();
+        delayQueue.put(new DelayedTask("Task1", 5, TimeUnit.SECONDS));
+        delayQueue.put(new DelayedTask("Task2", 3, TimeUnit.SECONDS));
+        delayQueue.put(new DelayedTask("Task3", 10, TimeUnit.SECONDS));
+
+        while (!delayQueue.isEmpty()) {
+            DelayedTask task = delayQueue.take(); // Blocks until a task's delay has expired
+            System.out.println("Executed: " + task.getTaskName() + " at " + System.currentTimeMillis());
+        }
+    }
+
+}
+
+class DelayedTask implements Delayed {
+
+    private final String taskName;
+    private final long startTime;
+
+    public DelayedTask(String taskName, long delay, TimeUnit unit) {
+        this.taskName = taskName;
+        this.startTime = System.currentTimeMillis() + unit.toMillis(delay);
+    }
+
+    @Override
+    public long getDelay(TimeUnit unit) {
+        long remaining = startTime - System.currentTimeMillis();
+        return unit.convert(remaining, TimeUnit.MILLISECONDS);
+    }
+
+    @Override
+    public int compareTo(Delayed o) {
+        if (this.startTime < ((DelayedTask) o).startTime) {
+            return -1;
+        }
+        if (this.startTime > ((DelayedTask) o).startTime) {
+            return 1;
+        }
+        return 0;
+    }
+
+    public String getTaskName() {
+        return taskName;
+    }
+}
+```
+
 ---
 
-## 15. ConcurrentLinkedQueue
+## ConcurrentLinkedQueue
 
 A **non-blocking**, **lock-free**, thread-safe queue.
 
@@ -361,26 +423,65 @@ A **non-blocking**, **lock-free**, thread-safe queue.
 * Uses CAS (Compare-And-Swap)
 * High performance
 * No blocking
+  
+```java
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
+public class Demo {
+    public static void main(String[] args) {
+
+        Queue<Integer> queue = new ConcurrentLinkedQueue<>();
+
+        Runnable task = () -> {
+            for (int i = 0; i < 5; i++) {
+                queue.offer(i);
+                System.out.println(Thread.currentThread().getName() +
+                        " added " + i);
+            }
+        };
+
+        new Thread(task).start();
+        new Thread(task).start();
+    }
+}
+/**
+Output: (Both Threading are putting simulatenously)
+Thread-1 added 0
+Thread-0 added 0
+Thread-0 added 1
+Thread-0 added 2
+Thread-0 added 3
+Thread-0 added 4
+Thread-1 added 1
+Thread-1 added 2
+Thread-1 added 3
+Thread-1 added 4
+*/
+```
+
+---
 ### Best for:
 
 * High throughput systems
 
 ---
 
-## 16. ConcurrentLinkedDeque
+## ConcurrentLinkedDeque
 
 Thread-safe **double-ended** non-blocking queue.
 
 ### Features:
 
 * Add/remove from both ends
-* Uses CAS
+* Uses Compare And Swap technique
 * No locks
+
+
 
 ---
 
-## 17. Queue vs BlockingQueue vs Deque
+## Queue vs BlockingQueue vs Deque
 
 | Feature      | Queue | BlockingQueue | Deque    |
 | ------------ | ----- | ------------- | -------- |
@@ -391,24 +492,21 @@ Thread-safe **double-ended** non-blocking queue.
 
 ---
 
-## 18. When to Use Which Queue?
+## Summary
 
-* **LinkedList** → Simple FIFO
-* **ArrayDeque** → Stack or Deque
-* **PriorityQueue** → Priority-based processing
-* **BlockingQueue** → Multithreading
-* **DelayQueue** → Scheduling
-* **ConcurrentLinkedQueue** → High concurrency
+| Data Structure | Thread-Safe | Blocking | Bounded | Ordering | Null Allowed | Use Case |
+|---------------|------------|----------|---------|----------|--------------|----------|
+| LinkedList | ❌ No | ❌ No | ❌ No | FIFO | ✅ Yes | Basic single-thread queue |
+| PriorityQueue | ❌ No | ❌ No | ❌ No | Priority | ❌ No | Single-thread priority handling |
+| Deque (ArrayDeque) | ❌ No | ❌ No | ❌ No | FIFO / LIFO | ❌ No | Fast stack/queue (single-thread) |
+| Deque (LinkedListDeque) | ❌ No | ❌ No | ❌ No | FIFO / LIFO | ✅ Yes | Stack + Queue using LinkedList |
+| ArrayBlockingQueue | ✅ Yes | ✅ Yes | ✅ Yes | FIFO | ❌ No | Fixed-size producer-consumer |
+| LinkedBlockingQueue | ✅ Yes | ✅ Yes | ✅ / ❌ | FIFO | ❌ No | High-throughput producer-consumer |
+| PriorityBlockingQueue | ✅ Yes | ⚠️ Partial | ❌ No | Priority | ❌ No | Concurrent priority tasks |
+| SynchronousQueue | ✅ Yes | ✅ Yes | ✅ (0) | FIFO / LIFO | ❌ No | Direct thread handoff |
+| DelayQueue | ✅ Yes | ✅ Yes | ❌ No | Delay-based | ❌ No | Scheduled / delayed tasks |
+| ConcurrentLinkedQueue | ✅ Yes | ❌ No | ❌ No | FIFO | ❌ No | Lock-free high-throughput queue |
+| ConcurrentLinkedDeque | ✅ Yes | ❌ No | ❌ No | FIFO / LIFO | ❌ No | Lock-free double-ended queue |
 
----
 
-## 19. Summary
 
-* Queue is FIFO-based
-* Java provides multiple implementations
-* Blocking queues simplify concurrency
-* Choose queue based on **ordering**, **thread safety**, and **performance**
-
----
-
-✅ **Perfect for interviews and presentations**
