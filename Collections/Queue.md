@@ -242,7 +242,7 @@ System.out.println(queue.peek()); // output : 11
 ### Characteristics:
 
 * Optionally bounded (if capacity is not provided it creates a capacity of Integer.MAX_VALUE)
-* Backed by LinkedList
+* Backed by Linked nodes
 * Uses **two locks** (higher concurrency) leads to less waiting time
 
 ```java
