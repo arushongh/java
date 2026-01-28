@@ -497,7 +497,7 @@ Thread-1 added 4
 
 ## ConcurrentLinkedDeque
 
-Thread-safe **double-ended** non-blocking queue.
+Thread-safe **double-ended** non-blocking deque.
 
 ### Features:
 
