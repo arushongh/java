@@ -528,7 +528,7 @@ An unbounded, thread-safe queue that supports both normal enqueuing and direct h
 
 | Data Structure             | Thread-Safe | Blocking | Bounded      | Ordering        | Null Allowed | Use Case |
 |----------------------------|------------|----------|-------------|----------------|--------------|----------|
-| LinkedList                 | ❌ No      | ❌ No    | ❌ No       | FIFO           | ✅ Yes       | Basic single-thread queue |
+| LinkedList                 | ❌ No      | ❌ No    | ❌ No       | FIFO           | ❌ No      | Basic single-thread queue |
 | PriorityQueue              | ❌ No      | ❌ No    | ❌ No       | Priority       | ❌ No        | Single-thread priority handling |
 | Deque (ArrayDeque)         | ❌ No      | ❌ No    | ❌ No       | FIFO / LIFO    | ❌ No        | Fast stack/queue (single-thread) |
 | ArrayBlockingQueue         | ✅ Yes     | ✅ Yes   | ✅ Yes      | FIFO           | ❌ No        | Fixed-size producer-consumer |
