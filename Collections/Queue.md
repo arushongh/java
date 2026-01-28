@@ -31,11 +31,13 @@ Common implementations:
 * `Deque`
 * `ArrayBlockingQueue`
 * `LinkedBlockingQueue`
+* `LinkedBlockingDeque`
 * `PriorityBlockingQueue`
 * `SynchronousQueue`
 * `DelayQueue`
 * `ConcurrentLinkedQueue`
 * `ConcurrentLinkedDeque`
+* `LinkedTransferQueue`
 
 ---
 
@@ -524,18 +526,21 @@ An unbounded, thread-safe queue that supports both normal enqueuing and direct h
 
 ## Summary
 
-| Data Structure | Thread-Safe | Blocking | Bounded | Ordering | Null Allowed | Use Case |
-|---------------|------------|----------|---------|----------|--------------|----------|
-| LinkedList | ❌ No | ❌ No | ❌ No | FIFO | ✅ Yes | Basic single-thread queue |
-| PriorityQueue | ❌ No | ❌ No | ❌ No | Priority | ❌ No | Single-thread priority handling |
-| Deque (ArrayDeque) | ❌ No | ❌ No | ❌ No | FIFO / LIFO | ❌ No | Fast stack/queue (single-thread) |
-| ArrayBlockingQueue | ✅ Yes | ✅ Yes | ✅ Yes | FIFO | ❌ No | Fixed-size producer-consumer |
-| LinkedBlockingQueue | ✅ Yes | ✅ Yes | ✅ / ❌ | FIFO | ❌ No | High-throughput producer-consumer |
-| PriorityBlockingQueue | ✅ Yes | ⚠️ Partial | ❌ No | Priority | ❌ No | Concurrent priority tasks |
-| SynchronousQueue | ✅ Yes | ✅ Yes | ✅ (0) | FIFO / LIFO | ❌ No | Direct thread handoff |
-| DelayQueue | ✅ Yes | ✅ Yes | ❌ No | Delay-based | ❌ No | Scheduled / delayed tasks |
-| ConcurrentLinkedQueue | ✅ Yes | ❌ No | ❌ No | FIFO | ❌ No | Lock-free high-throughput queue |
-| ConcurrentLinkedDeque | ✅ Yes | ❌ No | ❌ No | FIFO / LIFO | ❌ No | Lock-free double-ended queue |
+| Data Structure             | Thread-Safe | Blocking | Bounded      | Ordering        | Null Allowed | Use Case |
+|----------------------------|------------|----------|-------------|----------------|--------------|----------|
+| LinkedList                 | ❌ No      | ❌ No    | ❌ No       | FIFO           | ✅ Yes       | Basic single-thread queue |
+| PriorityQueue              | ❌ No      | ❌ No    | ❌ No       | Priority       | ❌ No        | Single-thread priority handling |
+| Deque (ArrayDeque)         | ❌ No      | ❌ No    | ❌ No       | FIFO / LIFO    | ❌ No        | Fast stack/queue (single-thread) |
+| ArrayBlockingQueue         | ✅ Yes     | ✅ Yes   | ✅ Yes      | FIFO           | ❌ No        | Fixed-size producer-consumer |
+| LinkedBlockingQueue        | ✅ Yes     | ✅ Yes   | ✅ / ❌     | FIFO           | ❌ No        | High-throughput producer-consumer |
+| LinkedBlockingDeque        | ✅ Yes     | ✅ Yes   | ✅ / ❌     | FIFO / LIFO    | ❌ No        | Blocking double-ended queue, work-stealing |
+| PriorityBlockingQueue      | ✅ Yes     | ⚠️ Partial | ❌ No      | Priority       | ❌ No        | Concurrent priority tasks |
+| SynchronousQueue           | ✅ Yes     | ✅ Yes   | ✅ (0)      | FIFO / LIFO    | ❌ No        | Direct thread handoff |
+| DelayQueue                 | ✅ Yes     | ✅ Yes   | ❌ No       | Delay-based    | ❌ No        | Scheduled / delayed tasks |
+| ConcurrentLinkedQueue      | ✅ Yes     | ❌ No    | ❌ No       | FIFO           | ❌ No        | Lock-free high-throughput queue |
+| ConcurrentLinkedDeque      | ✅ Yes     | ❌ No    | ❌ No       | FIFO / LIFO    | ❌ No        | Lock-free double-ended queue |
+| LinkedTransferQueue        | ✅ Yes     | ✅ Yes   | ❌ No       | FIFO           | ❌ No        | Unbounded queue + direct producer-consumer handoff |
+
 
 ---
 
