@@ -254,6 +254,30 @@ Best choice for **high producer-consumer throughput**.
 
 ---
 
+##  LinkedBlockingDeque
+
+### Characteristics:
+
+* Optionally bounded (if capacity is not provided it creates a capacity of Integer.MAX_VALUE)
+* Backed by Linked nodes
+* Uses **two locks** (higher concurrency) leads to less waiting time
+
+```java
+BlockingQueue<Integer>deque = new LinkedBlockingDeque<>(); // unbounded -
+BlockingQueue<Integer>deque = new LinkedBlockingDeque<>(5); // bounded by size 5
+```
+
+### Additional Deque Methods
+
+* `putFirst(e)` Waits if full
+* `putLast(e)` Waits if full
+* `takeFirst()` Waits if empty
+* `takeLast()` Waits if empty
+
+Similarly offerFirst(), offerLast(), pollFirst(), pollLast() ...
+
+---
+
 ## PriorityBlockingQueue
 
 * Thread-safe version of PriorityQueue
@@ -482,6 +506,21 @@ Thread-safe **double-ended** non-blocking queue.
 
 
 ---
+
+## LinkedTransferQueue
+
+An unbounded, thread-safe queue that supports both normal enqueuing and direct handoff of elements.
+
+### Important Methods:
+
+| Method    | Behavior             |
+| --------- | -------------------- |
+| `transfer(E e)`   | Waits until a consumer receives the element      |
+| `tryTransfer(E e)`  | Transfers only if a consumer is already waiting returns true or false      |
+| `tryTransfer(E e, long timeout, TimeUnit unit)` | Waits up to timeout for a consumer. |
+| `getWaitingConsumerCount()`  | Approximate number of waiting consumers. |
+| `hasWaitingConsumer()`  | Checks if any consumer is waiting returns true or false |
+
 
 ## Summary
 
